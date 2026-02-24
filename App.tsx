@@ -95,18 +95,31 @@ export default function App() {
     
     Papa.parse(file, {
       header: true,
-      dynamicTyping: true,
+      dynamicTyping: false,
       skipEmptyLines: true,
       complete: (results: any) => {
         const data: DataPoint[] = results.data;
         const columns = results.meta.fields || [];
         
-        const numericColumns = columns.filter((col: string) => 
-          data.length > 0 && typeof data[0][col] === 'number'
-        );
-        const categoricalColumns = columns.filter((col: string) => 
-          data.length > 0 && typeof data[0][col] === 'string'
-        );
+        // Helper function to check if a column is numeric by testing multiple rows
+        const isNumericColumn = (col: string): boolean => {
+          if (data.length === 0) return false;
+          let numericCount = 0;
+          const sampleSize = Math.min(10, data.length);
+          
+          for (let i = 0; i < sampleSize; i++) {
+            const val = data[i][col];
+            if (val === '' || val === null || val === undefined) continue;
+            const parsed = parseFloat(val);
+            if (!isNaN(parsed) && val.trim() !== '') {
+              numericCount++;
+            }
+          }
+          return numericCount > 0;
+        };
+
+        const numericColumns = columns.filter(isNumericColumn);
+        const categoricalColumns = columns.filter((col: string) => !isNumericColumn(col));
 
         const newDataset: Dataset = {
           id: crypto.randomUUID(),
