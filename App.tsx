@@ -19,6 +19,7 @@ export default function App() {
   const [charts, setCharts] = useState<ChartConfig[]>([]);
   const [isLive, setIsLive] = useState(false);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'data' | 'insights' | 'stats'>('dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   // UI State
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
@@ -221,9 +222,22 @@ export default function App() {
   const filteredData = getFilteredData();
 
   return (
-    <div className="flex h-screen bg-slate-950 text-slate-200 font-sans">
+    <div className="flex h-screen bg-slate-950 text-slate-200 font-sans flex-col md:flex-row">
+      {/* Mobile Header */}
+      <div className="md:hidden flex items-center justify-between h-14 border-b border-slate-800 bg-slate-900 px-4 z-20">
+        <div className="flex items-center space-x-2">
+          <div className="w-6 h-6 bg-gradient-to-tr from-blue-500 to-cyan-400 rounded flex items-center justify-center">
+            <Activity className="text-white w-4 h-4" />
+          </div>
+          <span className="font-bold text-sm text-white">Lumina</span>
+        </div>
+        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-slate-800 rounded-lg">
+          {isSidebarOpen ? <X size={20} /> : <Filter size={20} />}
+        </button>
+      </div>
+
       {/* Sidebar */}
-      <aside className="w-64 border-r border-slate-800 bg-slate-900 flex flex-col shrink-0">
+      <aside className={`${isSidebarOpen ? 'fixed' : 'hidden'} md:sticky md:flex w-full md:w-64 border-r border-slate-800 bg-slate-900 flex-col shrink-0 top-14 md:top-0 left-0 right-0 bottom-0 md:relative z-10 md:z-0`}>
         <div className="p-6 flex items-center space-x-3 border-b border-slate-800">
           <div className="w-8 h-8 bg-gradient-to-tr from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
              <Activity className="text-white w-5 h-5" />
@@ -236,31 +250,43 @@ export default function App() {
           <div className="space-y-1">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 ml-2">Menu</p>
             <button 
-              onClick={() => setActiveTab('dashboard')}
-              className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${activeTab === 'dashboard' ? 'bg-slate-800 text-blue-400' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'}`}
+              onClick={() => {
+                setActiveTab('dashboard');
+                setIsSidebarOpen(false);
+              }}
+              className={`w-full flex items-center space-x-2 md:space-x-3 px-3 py-2 rounded-lg transition-colors text-xs md:text-sm ${activeTab === 'dashboard' ? 'bg-slate-800 text-blue-400' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'}`}
             >
-              <BarChart2 size={18} />
+              <BarChart2 size={16} className="md:w-[18px] md:h-[18px]" />
               <span>Dashboard</span>
             </button>
             <button 
-               onClick={() => setActiveTab('stats')}
-               className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${activeTab === 'stats' ? 'bg-slate-800 text-blue-400' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'}`}
+               onClick={() => {
+                 setActiveTab('stats');
+                 setIsSidebarOpen(false);
+               }}
+               className={`w-full flex items-center space-x-2 md:space-x-3 px-3 py-2 rounded-lg transition-colors text-xs md:text-sm ${activeTab === 'stats' ? 'bg-slate-800 text-blue-400' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'}`}
             >
-              <Calculator size={18} />
+              <Calculator size={16} className="md:w-[18px] md:h-[18px]" />
               <span>Statistics</span>
             </button>
             <button 
-               onClick={() => setActiveTab('data')}
-               className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${activeTab === 'data' ? 'bg-slate-800 text-blue-400' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'}`}
+               onClick={() => {
+                 setActiveTab('data');
+                 setIsSidebarOpen(false);
+               }}
+               className={`w-full flex items-center space-x-2 md:space-x-3 px-3 py-2 rounded-lg transition-colors text-xs md:text-sm ${activeTab === 'data' ? 'bg-slate-800 text-blue-400' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'}`}
             >
-              <Database size={18} />
+              <Database size={16} className="md:w-[18px] md:h-[18px]" />
               <span>Data Inspector</span>
             </button>
             <button 
-               onClick={() => setActiveTab('insights')}
-               className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${activeTab === 'insights' ? 'bg-slate-800 text-blue-400' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'}`}
+               onClick={() => {
+                 setActiveTab('insights');
+                 setIsSidebarOpen(false);
+               }}
+               className={`w-full flex items-center space-x-2 md:space-x-3 px-3 py-2 rounded-lg transition-colors text-xs md:text-sm ${activeTab === 'insights' ? 'bg-slate-800 text-blue-400' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'}`}
             >
-              <BrainCircuit size={18} />
+              <BrainCircuit size={16} className="md:w-[18px] md:h-[18px]" />
               <span>AI Insights</span>
             </button>
           </div>
@@ -353,16 +379,16 @@ export default function App() {
                <>
                  {/* Dashboard View */}
                  {activeTab === 'dashboard' && (
-                    <div className="p-6 overflow-y-auto custom-scrollbar space-y-6 h-full">
+                    <div className="p-3 md:p-6 overflow-y-auto custom-scrollbar space-y-4 md:space-y-6 h-full">
                        {/* Filters Bar */}
-                       <div className="flex items-center justify-between bg-slate-900/50 border border-slate-800 p-4 rounded-xl">
-                          <div className="flex items-center space-x-4">
-                             <div className="flex items-center space-x-2 text-slate-400">
-                                <Filter size={16} />
-                                <span className="text-sm font-medium">Filter:</span>
-                             </div>
+                       <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 bg-slate-900/50 border border-slate-800 p-3 md:p-4 rounded-lg md:rounded-xl">
+                          <div className="flex items-center space-x-2 text-slate-400">
+                             <Filter size={16} />
+                             <span className="text-xs md:text-sm font-medium">Filter:</span>
+                          </div>
+                          <div className="flex flex-col md:flex-row gap-2 md:gap-3 flex-1">
                              <select 
-                                className="bg-slate-800 border border-slate-700 text-slate-200 text-sm rounded-md px-3 py-1.5 focus:outline-none focus:border-blue-500"
+                                className="bg-slate-800 border border-slate-700 text-slate-200 text-xs md:text-sm rounded-md px-3 py-1.5 focus:outline-none focus:border-blue-500 flex-1 md:flex-none"
                                 value={filterColumn}
                                 onChange={(e) => setFilterColumn(e.target.value)}
                              >
@@ -372,48 +398,49 @@ export default function App() {
                              <input 
                                 type="text" 
                                 placeholder="Value..." 
-                                className="bg-slate-800 border border-slate-700 text-slate-200 text-sm rounded-md px-3 py-1.5 focus:outline-none focus:border-blue-500"
+                                className="bg-slate-800 border border-slate-700 text-slate-200 text-xs md:text-sm rounded-md px-3 py-1.5 focus:outline-none focus:border-blue-500 flex-1"
                                 value={filterValue}
                                 onChange={(e) => setFilterValue(e.target.value)}
                              />
                              {(filterColumn || filterValue) && (
                                 <button 
                                    onClick={() => { setFilterColumn(''); setFilterValue(''); }}
-                                   className="text-xs text-red-400 hover:underline"
+                                   className="text-xs text-red-400 hover:underline px-2 py-1.5"
                                 >
                                    Clear
                                 </button>
                              )}
                           </div>
-                          <button 
-                             onClick={() => setIsAddChartModalOpen(true)}
-                             className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-blue-600/20"
-                          >
-                             <Plus size={16} />
-                             <span>Add Chart</span>
-                          </button>
                        </div>
+                       <button 
+                          onClick={() => setIsAddChartModalOpen(true)}
+                          className="flex items-center space-x-2 px-3 md:px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs md:text-sm font-medium transition-colors shadow-lg shadow-blue-600/20 w-full md:w-auto justify-center md:justify-start"
+                       >
+                          <Plus size={16} className="flex-shrink-0" />
+                          <span className="hidden md:inline">Add Chart</span>
+                          <span className="md:hidden">Add Chart</span>
+                       </button>
 
                        {/* Stats Cards */}
-                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                          <div className="bg-slate-900 border border-slate-800 p-5 rounded-xl">
-                             <h4 className="text-slate-400 text-sm font-medium uppercase tracking-wide">Total Records</h4>
-                             <p className="text-3xl font-bold text-white mt-2">{filteredData.length.toLocaleString()}</p>
+                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+                          <div className="bg-slate-900 border border-slate-800 p-4 md:p-5 rounded-lg md:rounded-xl">
+                             <h4 className="text-slate-400 text-xs md:text-sm font-medium uppercase tracking-wide">Total Records</h4>
+                             <p className="text-2xl md:text-3xl font-bold text-white mt-2">{filteredData.length.toLocaleString()}</p>
                           </div>
-                          <div className="bg-slate-900 border border-slate-800 p-5 rounded-xl">
-                             <h4 className="text-slate-400 text-sm font-medium uppercase tracking-wide">Columns</h4>
-                             <p className="text-3xl font-bold text-white mt-2">{activeDataset.columns.length}</p>
+                          <div className="bg-slate-900 border border-slate-800 p-4 md:p-5 rounded-lg md:rounded-xl">
+                             <h4 className="text-slate-400 text-xs md:text-sm font-medium uppercase tracking-wide">Columns</h4>
+                             <p className="text-2xl md:text-3xl font-bold text-white mt-2">{activeDataset.columns.length}</p>
                           </div>
-                          <div className="bg-slate-900 border border-slate-800 p-5 rounded-xl">
-                             <h4 className="text-slate-400 text-sm font-medium uppercase tracking-wide">Last Updated</h4>
-                             <p className="text-3xl font-bold text-white mt-2">
+                          <div className="bg-slate-900 border border-slate-800 p-4 md:p-5 rounded-lg md:rounded-xl">
+                             <h4 className="text-slate-400 text-xs md:text-sm font-medium uppercase tracking-wide">Last Updated</h4>
+                             <p className="text-2xl md:text-3xl font-bold text-white mt-2">
                                 {isLive ? 'Now' : new Date(activeDataset.createdAt).toLocaleDateString()}
                              </p>
                           </div>
                        </div>
 
                        {/* Charts Grid */}
-                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-10">
+                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 pb-10">
                           {charts.map(config => (
                              <ChartContainer 
                                 key={config.id} 
@@ -629,30 +656,57 @@ export default function App() {
                </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-4">
-               <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-1">X Axis (Category/Time)</label>
-                  <select 
-                     className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
-                     value={newChartX}
-                     onChange={(e) => setNewChartX(e.target.value)}
-                  >
-                     <option value="">Select Column</option>
-                     {activeDataset?.columns.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
+            {newChartType === ChartType.PIE ? (
+               <div className="grid grid-cols-2 gap-4">
+                  <div>
+                     <label className="block text-sm font-medium text-slate-400 mb-1">Category (Labels)</label>
+                     <select 
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                        value={newChartX}
+                        onChange={(e) => setNewChartX(e.target.value)}
+                     >
+                        <option value="">Select Column</option>
+                        {activeDataset?.columns.map(c => <option key={c} value={c}>{c}</option>)}
+                     </select>
+                  </div>
+                  <div>
+                     <label className="block text-sm font-medium text-slate-400 mb-1">Values (Size)</label>
+                     <select 
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                        value={newChartY}
+                        onChange={(e) => setNewChartY(e.target.value)}
+                     >
+                        <option value="">Select Column</option>
+                        {activeDataset?.numericColumns.map(c => <option key={c} value={c}>{c}</option>)}
+                     </select>
+                  </div>
                </div>
-               <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-1">Y Axis (Value)</label>
-                  <select 
-                     className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
-                     value={newChartY}
-                     onChange={(e) => setNewChartY(e.target.value)}
-                  >
-                     <option value="">Select Column</option>
-                     {activeDataset?.numericColumns.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
+            ) : (
+               <div className="grid grid-cols-2 gap-4">
+                  <div>
+                     <label className="block text-sm font-medium text-slate-400 mb-1">X Axis (Category/Time)</label>
+                     <select 
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                        value={newChartX}
+                        onChange={(e) => setNewChartX(e.target.value)}
+                     >
+                        <option value="">Select Column</option>
+                        {activeDataset?.columns.map(c => <option key={c} value={c}>{c}</option>)}
+                     </select>
+                  </div>
+                  <div>
+                     <label className="block text-sm font-medium text-slate-400 mb-1">Y Axis (Value)</label>
+                     <select 
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                        value={newChartY}
+                        onChange={(e) => setNewChartY(e.target.value)}
+                     >
+                        <option value="">Select Column</option>
+                        {activeDataset?.numericColumns.map(c => <option key={c} value={c}>{c}</option>)}
+                     </select>
+                  </div>
                </div>
-            </div>
+            )}
 
             <button 
                onClick={handleAddChart}
