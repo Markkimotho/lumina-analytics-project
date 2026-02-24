@@ -23,38 +23,38 @@ export const StatisticsPanel: React.FC<StatisticsPanelProps> = ({ dataset }) => 
   };
 
   return (
-    <div className="space-y-8 pb-10">
+    <div className="space-y-6 md:space-y-8 pb-10 p-3 md:p-0">
       {/* Univariate Statistics */}
       <section>
-        <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+        <h3 className="text-base md:text-lg font-semibold text-white mb-3 md:mb-4 flex items-center gap-2">
           <span className="w-1 h-6 bg-emerald-500 rounded-full"></span>
           Numeric Summaries
         </h3>
-        <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+        <div className="bg-slate-900 border border-slate-800 rounded-lg md:rounded-xl overflow-hidden">
           <div className="overflow-x-auto custom-scrollbar">
-            <table className="w-full text-left text-sm text-slate-400">
+            <table className="w-full text-left text-xs md:text-sm text-slate-400">
               <thead className="bg-slate-800/80 text-slate-200 sticky top-0">
                 <tr>
-                  <th className="px-6 py-3 font-semibold text-slate-300 text-sm">Column</th>
-                  <th className="px-6 py-3 font-semibold text-slate-300 text-sm text-right">Mean</th>
-                  <th className="px-6 py-3 font-semibold text-slate-300 text-sm text-right">Median</th>
-                  <th className="px-6 py-3 font-semibold text-slate-300 text-sm text-right">Std Dev</th>
-                  <th className="px-6 py-3 font-semibold text-slate-300 text-sm text-right">Min</th>
-                  <th className="px-6 py-3 font-semibold text-slate-300 text-sm text-right">Max</th>
-                  <th className="px-6 py-3 font-semibold text-slate-300 text-sm text-right">Missing</th>
-                  <th className="px-6 py-3 font-semibold text-slate-300 text-sm text-center">Distribution</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 font-semibold text-slate-300 text-xs md:text-sm">Column</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 font-semibold text-slate-300 text-xs md:text-sm text-right">Mean</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 font-semibold text-slate-300 text-xs md:text-sm text-right">Median</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 font-semibold text-slate-300 text-xs md:text-sm text-right">Std Dev</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 font-semibold text-slate-300 text-xs md:text-sm text-right">Min</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 font-semibold text-slate-300 text-xs md:text-sm text-right">Max</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 font-semibold text-slate-300 text-xs md:text-sm text-right">Missing</th>
+                  <th className="px-3 md:px-6 py-2 md:py-3 font-semibold text-slate-300 text-xs md:text-sm text-center">Distribution</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/50">
                 {summaries.map((stat) => (
                   <tr key={stat.column} className="hover:bg-slate-800/20 transition-colors">
-                    <td className="px-6 py-3 font-medium text-slate-300">{stat.column}</td>
-                    <td className="px-6 py-3 text-right text-slate-400">{stat.mean.toFixed(2)}</td>
-                    <td className="px-6 py-3 text-right text-slate-400">{stat.median.toFixed(2)}</td>
-                    <td className="px-6 py-3 text-right text-slate-400">{stat.stdDev.toFixed(2)}</td>
-                    <td className="px-6 py-3 text-right text-slate-400">{stat.min}</td>
-                    <td className="px-6 py-3 text-right text-slate-400">{stat.max}</td>
-                    <td className="px-6 py-3 text-right text-slate-400">{stat.nullCount}</td>
+                    <td className="px-3 md:px-6 py-2 md:py-3 font-medium text-slate-300 text-xs md:text-sm">{stat.column}</td>
+                    <td className="px-3 md:px-6 py-2 md:py-3 text-right text-slate-400 text-xs md:text-sm">{stat.mean.toFixed(2)}</td>
+                    <td className="px-3 md:px-6 py-2 md:py-3 text-right text-slate-400 text-xs md:text-sm">{stat.median.toFixed(2)}</td>
+                    <td className="px-3 md:px-6 py-2 md:py-3 text-right text-slate-400 text-xs md:text-sm">{stat.stdDev.toFixed(2)}</td>
+                    <td className="px-3 md:px-6 py-2 md:py-3 text-right text-slate-400 text-xs md:text-sm">{stat.min}</td>
+                    <td className="px-3 md:px-6 py-2 md:py-3 text-right text-slate-400 text-xs md:text-sm">{stat.max}</td>
+                    <td className="px-3 md:px-6 py-2 md:py-3 text-right text-slate-400 text-xs md:text-sm">{stat.nullCount}</td>
                     <td className="px-6 py-1 w-32 h-12">
                       <div className="h-10 w-24 mx-auto">
                          <TinyHistogram dataset={dataset} column={stat.column} />
@@ -71,11 +71,11 @@ export const StatisticsPanel: React.FC<StatisticsPanelProps> = ({ dataset }) => 
       {/* Correlation Matrix */}
       {uniqueCols.length > 1 && (
         <section>
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <h3 className="text-base md:text-lg font-semibold text-white mb-3 md:mb-4 flex items-center gap-2">
             <span className="w-1 h-6 bg-indigo-500 rounded-full"></span>
             Correlation Matrix (Pearson)
           </h3>
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 overflow-x-auto">
+          <div className="bg-slate-900 border border-slate-800 rounded-lg md:rounded-xl p-3 md:p-6 overflow-x-auto">
             <div className="inline-block min-w-full">
               <div className="grid" style={{ gridTemplateColumns: `auto repeat(${uniqueCols.length}, minmax(60px, 1fr))` }}>
                 

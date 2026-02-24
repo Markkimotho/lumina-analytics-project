@@ -463,14 +463,14 @@ export default function App() {
 
                  {/* Data Grid View */}
                  {activeTab === 'data' && (
-                    <div className="p-6 h-full flex flex-col">
-                       <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col h-full">
+                    <div className="p-3 md:p-6 h-full flex flex-col">
+                       <div className="bg-slate-900 border border-slate-800 rounded-lg md:rounded-xl overflow-hidden flex flex-col h-full">
                           <div className="overflow-auto custom-scrollbar flex-1">
-                             <table className="w-full text-left text-sm text-slate-400">
+                             <table className="w-full text-left text-xs md:text-sm text-slate-400">
                                 <thead className="bg-slate-800 text-slate-200 sticky top-0 z-10">
                                    <tr>
                                       {activeDataset.columns.map(col => (
-                                         <th key={col} className="px-6 py-3 font-medium whitespace-nowrap border-b border-slate-700">
+                                         <th key={col} className="px-3 md:px-6 py-2 md:py-3 font-medium whitespace-nowrap border-b border-slate-700 text-xs md:text-sm">
                                             {col}
                                          </th>
                                       ))}
@@ -480,7 +480,7 @@ export default function App() {
                                    {filteredData.slice(0, 100).map((row, i) => (
                                       <tr key={i} className="hover:bg-slate-800/50 transition-colors">
                                          {activeDataset.columns.map(col => (
-                                            <td key={`${i}-${col}`} className="px-6 py-3 whitespace-nowrap">
+                                            <td key={`${i}-${col}`} className="px-3 md:px-6 py-2 md:py-3 whitespace-nowrap text-xs md:text-sm">
                                                {row[col] !== null ? String(row[col]) : '-'}
                                             </td>
                                          ))}
@@ -500,9 +500,9 @@ export default function App() {
 
                  {/* AI Insights View */}
                  {activeTab === 'insights' && (
-                    <div className="flex h-full">
+                    <div className="flex flex-col md:flex-row h-full">
                         {/* Main Insights / Summary Area */}
-                        <div className="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-8">
+                        <div className="flex-1 overflow-y-auto custom-scrollbar p-3 md:p-8 space-y-4 md:space-y-8">
                           <div className="flex flex-col items-start mb-4">
                              <div className="flex items-center gap-3 mb-2">
                                 <div className="p-2 bg-indigo-500/20 rounded-lg">
@@ -596,13 +596,13 @@ export default function App() {
       
       {/* Expanded Chart Overlay */}
       {expandedChartId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 md:p-8">
-            <div className="relative w-full h-full max-w-7xl mx-auto flex flex-col">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-3 md:p-8">
+            <div className="relative w-full h-full max-w-4xl md:max-w-7xl mx-auto flex flex-col">
                 <button 
                     onClick={() => setExpandedChartId(null)} 
-                    className="absolute -top-3 -right-3 z-10 p-2 bg-slate-800 rounded-full text-slate-400 hover:text-white border border-slate-700 hover:bg-slate-700 transition-colors shadow-lg"
+                    className="absolute -top-2 md:-top-3 -right-2 md:-right-3 z-10 p-1.5 md:p-2 bg-slate-800 rounded-full text-slate-400 hover:text-white border border-slate-700 hover:bg-slate-700 transition-colors shadow-lg"
                 >
-                    <X size={24} />
+                    <X size={20} className="md:w-6 md:h-6" />
                 </button>
                 {(() => {
                     const chartConfig = charts.find(c => c.id === expandedChartId);
@@ -622,15 +622,15 @@ export default function App() {
       {/* Upload Modal */}
       <Modal isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} title="Upload Dataset">
         <div className="space-y-4">
-          <div className="border-2 border-dashed border-slate-700 rounded-xl p-8 flex flex-col items-center justify-center bg-slate-800/30 transition-colors hover:border-blue-500/50 hover:bg-slate-800/50">
-            <Upload className="w-12 h-12 text-slate-500 mb-4" />
+          <div className="border-2 border-dashed border-slate-700 rounded-lg md:rounded-xl p-6 md:p-8 flex flex-col items-center justify-center bg-slate-800/30 transition-colors hover:border-blue-500/50 hover:bg-slate-800/50">
+            <Upload className="w-8 md:w-12 h-8 md:h-12 text-slate-500 mb-3 md:mb-4" />
             <label className="block text-center cursor-pointer">
-              <span className="text-slate-200 font-medium">Click to upload CSV</span>
+              <span className="text-slate-200 font-medium text-sm md:text-base">Click to upload CSV</span>
               <input type="file" accept=".csv" onChange={handleFileUpload} className="hidden" />
-              <p className="text-sm text-slate-500 mt-1">or drag and drop</p>
+              <p className="text-xs md:text-sm text-slate-500 mt-1">or drag and drop</p>
             </label>
           </div>
-          {loading && <div className="text-center text-blue-400 flex items-center justify-center space-x-2"><Spinner className="w-4 h-4" /><span>Parsing data...</span></div>}
+          {loading && <div className="text-center text-blue-400 flex items-center justify-center space-x-2 text-xs md:text-sm"><Spinner className="w-3 md:w-4 h-3 md:h-4" /><span>Parsing data...</span></div>}
           <div className="text-xs text-slate-500">
              <p>Supported formats: CSV</p>
              <p>First row must contain headers.</p>
@@ -640,15 +640,15 @@ export default function App() {
 
       {/* Add Chart Modal */}
       <Modal isOpen={isAddChartModalOpen} onClose={() => setIsAddChartModalOpen(false)} title="Create Visualization">
-         <div className="space-y-5">
+         <div className="space-y-4 md:space-y-5">
             <div>
-               <label className="block text-sm font-medium text-slate-400 mb-1">Chart Type</label>
-               <div className="grid grid-cols-3 gap-2">
+               <label className="block text-xs md:text-sm font-medium text-slate-400 mb-2">Chart Type</label>
+               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {Object.values(ChartType).map(type => (
                      <button
                         key={type}
                         onClick={() => setNewChartType(type)}
-                        className={`px-3 py-2 rounded-lg text-sm border ${newChartType === type ? 'bg-blue-600 border-blue-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-600'}`}
+                        className={`px-2 md:px-3 py-1.5 md:py-2 rounded-lg text-xs md:text-sm border ${newChartType === type ? 'bg-blue-600 border-blue-500 text-white' : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-600'}`}
                      >
                         {type}
                      </button>
@@ -657,11 +657,11 @@ export default function App() {
             </div>
             
             {newChartType === ChartType.PIE ? (
-               <div className="grid grid-cols-2 gap-4">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                   <div>
-                     <label className="block text-sm font-medium text-slate-400 mb-1">Category (Labels)</label>
+                     <label className="block text-xs md:text-sm font-medium text-slate-400 mb-2">Category (Labels)</label>
                      <select 
-                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 text-xs md:text-sm focus:outline-none focus:border-blue-500"
                         value={newChartX}
                         onChange={(e) => setNewChartX(e.target.value)}
                      >
@@ -670,9 +670,9 @@ export default function App() {
                      </select>
                   </div>
                   <div>
-                     <label className="block text-sm font-medium text-slate-400 mb-1">Values (Size)</label>
+                     <label className="block text-xs md:text-sm font-medium text-slate-400 mb-2">Values (Size)</label>
                      <select 
-                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 text-xs md:text-sm focus:outline-none focus:border-blue-500"
                         value={newChartY}
                         onChange={(e) => setNewChartY(e.target.value)}
                      >
@@ -682,11 +682,11 @@ export default function App() {
                   </div>
                </div>
             ) : (
-               <div className="grid grid-cols-2 gap-4">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                   <div>
-                     <label className="block text-sm font-medium text-slate-400 mb-1">X Axis (Category/Time)</label>
+                     <label className="block text-xs md:text-sm font-medium text-slate-400 mb-2">X Axis (Category/Time)</label>
                      <select 
-                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 text-xs md:text-sm focus:outline-none focus:border-blue-500"
                         value={newChartX}
                         onChange={(e) => setNewChartX(e.target.value)}
                      >
@@ -695,9 +695,9 @@ export default function App() {
                      </select>
                   </div>
                   <div>
-                     <label className="block text-sm font-medium text-slate-400 mb-1">Y Axis (Value)</label>
+                     <label className="block text-xs md:text-sm font-medium text-slate-400 mb-2">Y Axis (Value)</label>
                      <select 
-                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 text-xs md:text-sm focus:outline-none focus:border-blue-500"
                         value={newChartY}
                         onChange={(e) => setNewChartY(e.target.value)}
                      >
