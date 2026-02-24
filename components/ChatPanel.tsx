@@ -117,6 +117,8 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ dataset, charts, onAddChar
         )}
         <div ref={bottomRef} />
       </div>
+        </>
+      )}
 
       {!isCollapsed && (
         <div className="p-3 md:p-4 border-t border-slate-800 bg-slate-900 shrink-0">
