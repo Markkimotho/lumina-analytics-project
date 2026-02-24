@@ -41,7 +41,7 @@ export const analyzeData = async (dataset: Dataset): Promise<AIInsight> => {
     if (!text) throw new Error("No response");
     return JSON.parse(text) as AIInsight;
   } catch (error) {
-    console.error("Gemini Analysis Error:", error);
+    console.error("Analysis Error:", error);
     return {
       summary: "Analysis unavailable.",
       trends: [],
@@ -66,7 +66,7 @@ export const chatWithAI = async (
     const columns = dataset.columns.join(', ');
     const existingChartsSummary = currentCharts.map(c => `${c.title} (${c.type})`).join(', ');
     
-    // Format history for Gemini
+    // Format history for analysis
     const previousTurns = history.slice(-6).map(msg => 
       `${msg.role === 'user' ? 'User' : 'Model'}: ${msg.content}`
     ).join('\n');

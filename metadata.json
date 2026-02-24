@@ -1,5 +1,5 @@
 {
   "name": "Lumina Analytics Dashboard",
-  "description": "A high-performance, interactive data visualization dashboard featuring real-time data updates, AI-powered insights using Gemini 2.5 Flash, and dynamic charting capabilities.",
+  "description": "A high-performance, interactive data visualization dashboard featuring real-time data updates, dynamic charting capabilities, and statistical analysis.",
   "requestFramePermissions": []
 }
