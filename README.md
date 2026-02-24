@@ -13,8 +13,19 @@ A high-performance, interactive data visualization dashboard featuring real-time
 - **Real-time Updates** - Simulate live data streaming
 - **Statistical Analysis** - View key metrics and distributions
 - **Data Filtering** - Filter datasets by column values
+- **Mobile Responsive** - Works seamlessly on phones, tablets, and desktops
 - **AI-Powered Insights** - Get automated data analysis (requires API configuration)
 - **Interactive Chat** - Ask questions about your data
+
+## Responsive Design
+
+The dashboard is fully optimized for mobile-first responsive design:
+- **Mobile (320px+)** - Full functionality on smartphones
+- **Tablet (640px+)** - Optimized layout for tablets
+- **Desktop (1024px+)** - Professional full-featured display
+- **Large Screens (1280px+)** - Enhanced experience on desktops
+
+For detailed information about responsive features, see [MOBILE_RESPONSIVE_IMPLEMENTATION.md](MOBILE_RESPONSIVE_IMPLEMENTATION.md)
 
 ## Run Locally
 

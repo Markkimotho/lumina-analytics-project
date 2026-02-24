@@ -20,6 +20,8 @@ export default function App() {
   const [isLive, setIsLive] = useState(false);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'data' | 'insights' | 'stats'>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isAiChatOpen, setIsAiChatOpen] = useState(false);
+  const [isDatasetListOpen, setIsDatasetListOpen] = useState(true);
   
   // UI State
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
@@ -245,10 +247,10 @@ export default function App() {
           <span className="font-bold text-lg tracking-tight text-white">Lumina</span>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-6">
+        <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-4 md:space-y-6">
           {/* Navigation */}
           <div className="space-y-1">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 ml-2">Menu</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 px-2">Menu</p>
             <button 
               onClick={() => {
                 setActiveTab('dashboard');
@@ -293,25 +295,44 @@ export default function App() {
 
           {/* Datasets List */}
           <div>
-             <div className="flex items-center justify-between mb-2 ml-2">
+             <button 
+                onClick={() => setIsDatasetListOpen(!isDatasetListOpen)}
+                className="w-full flex items-center justify-between mb-2 px-2 py-1.5 hover:bg-slate-800/50 rounded-lg transition-colors"
+             >
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Datasets</p>
-                <button onClick={() => setIsUploadModalOpen(true)} className="text-blue-400 hover:text-blue-300"><Plus size={14}/></button>
-             </div>
-             <div className="space-y-1">
-                {datasets.map(ds => (
-                  <button
-                    key={ds.id}
-                    onClick={() => setActiveDatasetId(ds.id)}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${activeDatasetId === ds.id ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:bg-slate-800/50'}`}
-                  >
-                    <span className="truncate">{ds.name}</span>
-                    {activeDatasetId === ds.id && <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>}
-                  </button>
-                ))}
-                {datasets.length === 0 && (
-                  <div className="text-sm text-slate-600 italic px-3">No datasets</div>
-                )}
-             </div>
+                <div className={`text-slate-500 transition-transform duration-200 ${isDatasetListOpen ? 'rotate-180' : ''}`}>
+                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M5 8l2 2 2-2" />
+                   </svg>
+                </div>
+             </button>
+             {isDatasetListOpen && (
+                <div className="space-y-1">
+                   {datasets.map(ds => (
+                     <button
+                       key={ds.id}
+                       onClick={() => {
+                         setActiveDatasetId(ds.id);
+                         setIsSidebarOpen(false);
+                       }}
+                       className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs md:text-sm transition-colors ${activeDatasetId === ds.id ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:bg-slate-800/50'}`}
+                     >
+                       <span className="truncate">{ds.name}</span>
+                       {activeDatasetId === ds.id && <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse flex-shrink-0 ml-2"></div>}
+                     </button>
+                   ))}
+                   {datasets.length === 0 && (
+                     <div className="text-xs text-slate-600 italic px-3 py-2">No datasets</div>
+                   )}
+                   <button 
+                      onClick={() => setIsUploadModalOpen(true)}
+                      className="w-full flex items-center gap-2 px-3 py-2 mt-2 text-xs text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors border border-blue-500/20 hover:border-blue-500/40"
+                   >
+                      <Plus size={14} />
+                      <span>Add Dataset</span>
+                   </button>
+                </div>
+             )}
           </div>
         </div>
         
@@ -500,15 +521,24 @@ export default function App() {
 
                  {/* AI Insights View */}
                  {activeTab === 'insights' && (
-                    <div className="flex flex-col md:flex-row h-full">
+                    <div className="flex flex-col md:flex-row h-full relative">
                         {/* Main Insights / Summary Area */}
                         <div className="flex-1 overflow-y-auto custom-scrollbar p-3 md:p-8 space-y-4 md:space-y-8">
                           <div className="flex flex-col items-start mb-4">
-                             <div className="flex items-center gap-3 mb-2">
-                                <div className="p-2 bg-indigo-500/20 rounded-lg">
-                                   <BrainCircuit size={24} className="text-indigo-400" />
+                             <div className="flex items-center gap-3 mb-2 justify-between w-full md:w-auto">
+                                <div className="flex items-center gap-3">
+                                   <div className="p-2 bg-indigo-500/20 rounded-lg">
+                                      <BrainCircuit size={24} className="text-indigo-400" />
+                                   </div>
+                                   <h3 className="text-2xl font-bold text-white">Executive Summary</h3>
                                 </div>
-                                <h3 className="text-2xl font-bold text-white">Executive Summary</h3>
+                                <button
+                                   onClick={() => setIsAiChatOpen(!isAiChatOpen)}
+                                   className="md:hidden p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+                                   title={isAiChatOpen ? "Hide AI Assistant" : "Show AI Assistant"}
+                                >
+                                   <MessageSquare size={20} />
+                                </button>
                              </div>
                              <p className="text-slate-400">
                                 AI-generated analysis of <span className="text-slate-200 font-medium">{activeDataset.name}</span>.
@@ -579,13 +609,27 @@ export default function App() {
                           )}
                         </div>
 
-                        {/* Chat Sidebar */}
-                        <div className="w-[400px] h-full shrink-0">
-                            <ChatPanel 
-                                dataset={activeDataset} 
-                                charts={charts} 
-                                onAddChart={handleAIAddChart} 
-                            />
+                        {/* Chat Sidebar - Collapsible on Mobile */}
+                        {/* Mobile: Full-screen overlay */}
+                        {isAiChatOpen && (
+                           <div className="md:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm" onClick={() => setIsAiChatOpen(false)} />
+                        )}
+                        <div className={`fixed md:static inset-y-0 right-0 z-40 w-full sm:w-[400px] h-full md:h-auto md:w-[400px] transition-transform duration-300 ${isAiChatOpen ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}`}>
+                            <div className="h-full flex flex-col bg-slate-900 border-l border-slate-800 relative">
+                                {/* Mobile close button */}
+                                <button
+                                   onClick={() => setIsAiChatOpen(false)}
+                                   className="md:hidden absolute top-3 right-3 p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+                                   title="Close AI Assistant"
+                                >
+                                   <X size={20} />
+                                </button>
+                                <ChatPanel 
+                                    dataset={activeDataset} 
+                                    charts={charts} 
+                                    onAddChart={handleAIAddChart} 
+                                />
+                            </div>
                         </div>
                     </div>
                  )}
