@@ -21,6 +21,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'data' | 'insights' | 'stats'>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAiChatOpen, setIsAiChatOpen] = useState(false);
+  const [isAiChatCollapsed, setIsAiChatCollapsed] = useState(false);
   const [isDatasetListOpen, setIsDatasetListOpen] = useState(true);
   
   // UI State
@@ -113,8 +114,9 @@ export default function App() {
           for (let i = 0; i < sampleSize; i++) {
             const val = data[i][col];
             if (val === '' || val === null || val === undefined) continue;
-            const parsed = parseFloat(val);
-            if (!isNaN(parsed) && val.trim() !== '') {
+            const strVal = String(val);
+            const parsed = parseFloat(strVal);
+            if (!isNaN(parsed) && strVal.trim() !== '') {
               numericCount++;
             }
           }
@@ -233,8 +235,16 @@ export default function App() {
           </div>
           <span className="font-bold text-sm text-white">Lumina</span>
         </div>
-        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-slate-800 rounded-lg">
-          {isSidebarOpen ? <X size={20} /> : <Filter size={20} />}
+        <button 
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
+          className="p-2 hover:bg-slate-800 rounded-lg transition-colors group"
+          title={isSidebarOpen ? "Close menu" : "Open menu"}
+        >
+          <div className="flex flex-col space-y-1.5">
+            <span className={`block h-0.5 w-5 bg-slate-400 group-hover:bg-white transition-all duration-300 ${isSidebarOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+            <span className={`block h-0.5 w-5 bg-slate-400 group-hover:bg-white transition-all duration-300 ${isSidebarOpen ? 'opacity-0' : ''}`}></span>
+            <span className={`block h-0.5 w-5 bg-slate-400 group-hover:bg-white transition-all duration-300 ${isSidebarOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+          </div>
         </button>
       </div>
 
@@ -627,7 +637,9 @@ export default function App() {
                                 <ChatPanel 
                                     dataset={activeDataset} 
                                     charts={charts} 
-                                    onAddChart={handleAIAddChart} 
+                                    onAddChart={handleAIAddChart}
+                                    isCollapsed={isAiChatCollapsed}
+                                    onToggleCollapse={setIsAiChatCollapsed}
                                 />
                             </div>
                         </div>

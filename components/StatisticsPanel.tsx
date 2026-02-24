@@ -149,7 +149,6 @@ const TinyHistogram: React.FC<{ dataset: Dataset, column: string }> = ({ dataset
             if (typeof value === 'number') return value.toString();
             return value;
           }}
-          contentFormatter={() => ''}
         />
         <Bar dataKey="count" fill="#6366f1" radius={[1, 1, 0, 0]} isAnimationActive={false} />
       </BarChart>
